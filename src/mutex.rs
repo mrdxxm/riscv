@@ -24,7 +24,7 @@ impl<T> mutex_trait::Mutex for &'_ CriticalSectionMutex<T> {
     type Data = T;
 
     fn lock<R>(&mut self, f: impl FnOnce(&mut Self::Data) -> R) -> R {
-        crate::interrupt::free(|_| f(unsafe { &mut *self.data.get() }))
+        crate::interrupt::free(|| f(unsafe { &mut *self.data.get() }))
     }
 }
 
